@@ -6,3 +6,4 @@
 #define SHOPFLOW_COMMANDE_H
 
 #endif //SHOPFLOW_COMMANDE_H
+printf("Nouveau client");
