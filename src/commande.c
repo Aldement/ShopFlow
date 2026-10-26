@@ -19,5 +19,7 @@ static void creerCommande(Commande *tab) {
     printf("Saisir le nombre de produits a commander: ");
     scanf("%d", &nb_produits);
     tab->lignes = malloc(nb_produits * sizeof(tab));
-    for (int i)
+    for (int i = 0; i < tab->lignes; i++) {
+        printf("%d", i);
+    }
 }
