@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../include/Produits.h"
 
 
 static void creerCommande(Commande *tab) {
@@ -15,7 +16,7 @@ static void creerCommande(Commande *tab) {
 
     printf("Saisir l'identifiand du client: ");
     scanf("%d", &client);
-    tab.idClient = client;
+    tab->idClient = client;
 
     printf("Saisir le nombre de produits a commander: ");
     scanf("%d", &nb_produits);
@@ -26,5 +27,8 @@ static void creerCommande(Commande *tab) {
         tab->lignes[i].refProduit[strcspn(tab->lignes[i].refProduit, "\n")] = '\0';
         printf("Saisir le quantite de produit: ");
         scanf("%d", &tab->lignes[i].quantite);
+    }
+    for (int i = 0; i < sizeof(modele) /sizeof(modele[0]); i++) {
+
     }
 }

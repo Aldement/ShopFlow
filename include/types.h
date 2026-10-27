@@ -25,7 +25,7 @@ typedef struct {
     char reference[12]; // Reference commerciale (SKU) //
     char designation[60]; // Libelle du produit //
     char categorie[30]; // Famille de produit //
-    float prixUnitaireHT; // Prix unitaire hors taxes //
+    double prixUnitaireHT; // Prix unitaire hors taxes //
     int quantiteStock; // Stock disponible //
     int seuilAlerte; // Seuil de reapprovisionnement //
     int actif; // Statut du produit //
@@ -35,8 +35,8 @@ typedef struct {
     char refProduit[12]; // Reference du produit commande //
     char designation[60]; // Libelle fige au moment de la vente //
     int quantite; // Quantite commande //
-    float prixUnitaire; // prix fige au moment de la vente //
-    float sousTotalHT; // Quantite x prixUnitaireHT //
+    double prixUnitaire; // prix fige au moment de la vente //
+    double sousTotalHT; // Quantite x prixUnitaireHT //
 } Ligne_Commande;
 
 typedef struct {
@@ -47,13 +47,13 @@ typedef struct {
     int nbLignes; // Nombre de lignes reelement saisies //
     int capaciteLignes;  // Taille du tableau alloue //
     Ligne_Commande *lignes; // Tableau de lignes de commande //
-    float montantBrutHT; // Some des sous-totaux des lignes, avant remise //
-    float tauxRemise; // Taux du palier, déterminé sur le montant HT brut //
-    float montantRemise; // montantBrutHT × tauxRemise / 100 //
-    float montantHT; // montantBrutHT - montantRemise //
-    float montantTVA; // 20% du montant HT //
-    float montantTTC; // HT + TVA + frais de port //
-    float fraisPort; // Frais de port appliques //
+    double montantBrutHT; // Some des sous-totaux des lignes, avant remise //
+    double tauxRemise; // Taux du palier, déterminé sur le montant HT brut //
+    double montantRemise; // montantBrutHT × tauxRemise / 100 //
+    double montantHT; // montantBrutHT - montantRemise //
+    double montantTVA; // 20% du montant HT //
+    double montantTTC; // HT + TVA + frais de port //
+    double fraisPort; // Frais de port appliques //
     Adresse adresseLivraisn; // Instante de l'addresse de livraison au moment de la commande //
 } Commande;
 
