@@ -15,4 +15,6 @@ add_executable(ShopFlow src/main.c
         src/Produits.c
         include/Produits.h
         src/Clients.c
-        include/Clients.h)
+        include/Clients.h
+        "src/Fonction Gestion des produits(ajouterProduit).c"
+        "src/Fonction Gestion des produits(modifierProduit(afficherProduits)).c")
