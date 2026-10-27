@@ -73,7 +73,7 @@ typedef struct {
 
 typedef struct {
     char nom[50];              // Nom commercial de la boutique (non vide) //
-    Produit *produits;         // Catalogue des produits (alloué dynamiquement, malloc) //
+    Produit* produits;         // Catalogue des produits (alloué dynamiquement, malloc) //
     int nbProduits;            // Nombre de produits au catalogue (>= 0) //
     int capaciteProduits;      // Capacité allouée du catalogue (>= nbProduits) //
     Client *clients;           // Répertoire des clients (alloué dynamiquement, malloc) //
