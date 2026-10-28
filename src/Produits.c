@@ -11,7 +11,9 @@
 
 
 static Produit *modele = NULL;
+static Commande *commande = NULL;
 int taille = 0;
+int tailleCommande = 0;
 
 static void saisirProduit(Produit *modele) {
     int p;
@@ -107,5 +109,97 @@ static void mettreAJourProduit(void) {
     }
     else {
         printf("Le produit de reference %s n'existe pas!", refProduit);
+    }
+}
+
+static int supprimerProduit(void) {
+    if (taille == 0) {
+        printf("Il n'y a pas des produits!");
+        return 0;
+    }
+    char refProduit[12];
+    printf("Saisir la reference de produit pour le supprimer: ");
+    fgets(refProduit, sizeof(refProduit), stdin);
+    refProduit[strcspn(refProduit, "\n")] = '\0';
+    int mod = -1;
+    for (int i = 0; i < taille; i++) {
+        if (strcmp(modele[i].reference, refProduit) == 0) {
+            mod = i;
+            break;
+        }
+    }
+    if (mod != -1) {
+        if (tailleCommande != 0) {
+            for (int i = 0; i < tailleCommande; i++) {
+                if (strcmp(commande[i].lignes->refProduit, refProduit) == 0) {
+                    if (strcmp(commande[i].statut, "ANNULEE") != 0){
+                        printf("Impossible a supprimer le produit en raison de commande sur ce produit.");
+                        return 0;
+                    }
+                }
+            }
+        }
+        modele[mod].actif = 0;
+        printf("Produit supprime.\n");
+        return 1;
+    }
+    else {
+        printf("Le produit de reference %s n'existe pas!", refProduit);
+        return 0;
+    }
+}
+static void afficher(int i) {
+    printf("Reference du produit: %s, ", modele[i].reference);
+    printf("Designation du produit: %s,", modele[i].designation);
+    printf("Categorie du produit: %s, ", modele[i].categorie);
+    printf("Prix du produit: %lf, ", modele[i].prixUnitaireHT);
+    printf("Quantite du produit: %d, ", modele[i].quantiteStock);
+    printf("Seuil de reapprovisionnement du produit: %d,", modele[i].seuilAlerte);
+    printf("Statut du produit (0 = pas actif, 1 = actif): %d", modele[i].actif);
+}
+
+static void afficherProduits(void) {
+    if (taille != 0){
+        for (int i = 0; i < taille; i++) {
+            afficher(i);
+        }
+    }
+    else {
+        printf("Il n'y a pas des produits!");
+    }
+}
+
+static void rechercherProduit(void) {
+    if (taille != 0) {
+        char reponse[60];
+        printf("Souhaitez-vous trouver le produit par reference ou par designation?: ");
+        fgets(reponse, sizeof(reponse), stdin);
+        reponse[strcspn(reponse, "\n")] = '\0';
+        if (strcmp(reponse, "reference") == 0) {
+            char refProduit[12];
+            printf("Saisir la reference de produit: ");
+            fgets(refProduit, sizeof(refProduit), stdin);
+            for (int i = 0; i < taille; i++) {
+                if (strcmp(modele[i].reference, refProduit) == 0) {
+                    afficher(i);
+                    break;
+                }
+            }
+        }
+        else if (strcmp(reponse, "designation") == 0) {
+            char str[60];
+            printf("Entrez le  mot-cle de la désignation: ");
+            scanf("%s", str);
+            int len_str = strlen(str);
+            for (int i = 0; i < taille; i++) {
+                int sim = 0;
+                for (int j = 0; j < len_str; j++) {
+                    if (modele[i].designation[j] == str[j]) sim++;
+                    if (sim == len_str) {
+                        afficher(i);
+                    }
+                }
+            }
+        }
     }
 }
