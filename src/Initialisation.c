@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "types.h"
+
 void initialiserDonneesTest(Boutique *b) {
     /* 1. Catalogue : allocation dynamique de 10 emplacements */
     b->capaciteProduits = 10;
@@ -40,7 +43,7 @@ void initialiserDonneesTest(Boutique *b) {
 }
 /* Liberation complete : une seule fuite memoire est sanctionnee */
 void detruireBoutique(Boutique *b) {
-    for (int i = 0; i < b->nbClients; i++) {
+    for (int i = 0; i < b->nbC lients; i++) {
         for (int j = 0; j < b->clients[i].nbCommandes; j++)
             free(b->clients[i].commandes[j].lignes);
         free(b->clients[i].commandes);
