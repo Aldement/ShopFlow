@@ -46,6 +46,7 @@ static void ajouterProduit(void) {
     saisirProduit(modele);
     modele[taille].actif = 1;
     printf("Produit crée avec succès");
+    taille++;
 }
 
 static void mettreAJourProduit(void) {
