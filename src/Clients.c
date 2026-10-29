@@ -88,6 +88,7 @@ int rechercheClient(Boutique *b, int idClient)
     return -1;
 }
 
+
 void mettreAJourClient(Boutique *b)
 {
     int id;
