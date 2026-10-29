@@ -39,6 +39,7 @@ static void saisirLigne(int t, int i) {
             printf("Il n'y a pas assez de ces produits pour votre commande, saisissez le quantite plus petite.\n");
         }
     } while (commande[t].lignes[i].quantite > modele[j].quantiteStock);
+    modele[j].quantiteStock -= commande[t].lignes[i].quantite;
     commande[t].lignes[i].sousTotalHT = commande[t].lignes[i].quantite * commande[t].lignes[i].prixUnitaire;
     commande[t].montantBrutHT += commande[t].lignes[i].sousTotalHT;
 }
@@ -60,7 +61,7 @@ static void changementMontant(int i) {
     else commande[i].fraisPort = 0;
     commande[i].montantTTC = commande[i].montantHT + commande[i].montantTVA + commande[i].fraisPort;
 }
-
+//A ajouter le controle de stock!!//
 static void creerCommande(void) {
     int client;
     int nb_produits;
@@ -155,8 +156,101 @@ static void supprimerLigne(void) {
     }
 }
 
-static void changerStatut(void){}
+static void changerStatut(void) {
+    int num;
+    printf("Saisir le numero de commande: ");
+    scanf("%d", &num);
+    if (num > tailleCommande) printf("La commande avec ce numero n'existe pas!");
+    else {
+        int found = 0;
+        for (int i = 0; i < tailleCommande; i++) {
+            if (commande[i].numero == num) {
+                found = 1;
+                if (strcmp(commande[i].statut, "EN_COURS") == 0) {
+                    strcpy(commande[i].statut, "EXPEDIEE");
+                    break;
+                }
+                if (strcmp(commande[i].statut, "EXPEDIEE") == 0) {
+                    strcpy(commande[i].statut, "LIVREE");
+                    break;
+                }
+                if (strcmp(commande[i].statut, "LIVREE") == 0) {
+                    printf("Impossiblea changer le statut de la commande, car elle est deja livree!");
+                    break;
+                }
+            }
+        }
+        if (found == 0) printf("La commande n'est pas trouvee");
+    }
+}
 
-static void annulerCommande(void){}
+static void annulerCommande(void) {
+    int num;
+    printf("Saisir le numero de commande: ");
+    scanf("%d", &num);
+    if (num > tailleCommande) printf("La commande avec ce numero n'existe pas!");
+    else {
+        int found = 0;
+        for (int i = 0; i < tailleCommande; i++) {
+            if (commande[i].numero == num) {
+                found = 1;
+                strcpy(commande[i].statut, "ANNULEE");
+                for (int j = 0; j < commande[i].nbLignes; j++) {
+                    for (int k = 0; k < tailleModele; k++){
+                        if (strcmp(commande[i].lignes[j].refProduit, modele[k].reference) == 0) {
+                            modele[k].quantiteStock += commande[i].lignes[j].quantite;
+                        }
+                    }
+                }
+            }
+        }
+        if (found == 0) printf("La commande n'est pas trouvee");
 
-static void afficherCommande(void){}
+    }
+}
+
+static void afficherCommande(void) {
+    int num;
+    printf("Saisir le numero de commande: ");
+    scanf("%d", &num);
+    if (num > tailleCommande) printf("La commande avec ce numero n'existe pas!");
+    else {
+        int found = 0;
+        for (int i = 0; i < tailleCommande; i++) {
+            if (commande[i].numero == num) {
+                found = 1;
+                printf("""Voici les informations de cette commande: \n"
+                         "L'identifiant de client: %d\n"
+                         "La date de validation de la commande: %d, %d, %d\n"
+                         "L'etat d'avancement de la commande: %s\n"
+                         "Il y a %d produits commandes avec la liste suivante:\n", commande[i].idClient,
+                         commande[i].dateCommande.jour, commande[i].dateCommande.mois, commande[i].dateCommande.annee,
+                         commande[i].statut, commande[i].nbLignes);
+                for (int j = 0; j < commande[i].nbLignes; j++) {
+                    printf("Liste commande numero %d: \n"
+                        "La reference de produit: %s\n"
+                        "La designation: %s\n"
+                        "La quantite de produits commande: %d\n"
+                        "Le prix de chaque produit: %lf\n"
+                        "Le prix total de la liste: %lf\n\n", j + 1, commande[i].lignes[j].refProduit,
+                        commande[i].lignes[j].designation, commande[i].lignes[j].quantite,
+                        commande[i].lignes[j].prixUnitaire, commande[i].lignes[j].sousTotalHT);
+
+                }
+                printf("""La somme des sous-totaux des listes (avant la remise): %lf\n"
+                         "Le taux de remise: %lf\n"
+                         "Le montant de la remise: %lf\n"
+                         "Le montant de commande apres la remise: %lf\n"
+                         "Le montant TVA: %lf\n"
+                         "Le montant TTC: %lf\n"
+                         "Le frais de port appliques: %lf\n"
+                         "L'addresse de livraison: %s, %s, %s, %s\n", commande[i].montantBrutHT,
+                         commande[i].tauxRemise, commande[i].montantRemise, commande[i].montantHT,
+                         commande[i].montantTVA, commande[i].montantTTC, commande[i].fraisPort,
+                         commande[i].adresseLivraisn.rue, commande[i].adresseLivraisn.ville,
+                         commande[i].adresseLivraisn.codePostal, commande[i].adresseLivraisn.pays);
+            }
+        }
+        if (found == 0) printf("La commande n'est pas trouvee");
+    }
+}
