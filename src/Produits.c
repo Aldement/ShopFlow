@@ -1,5 +1,8 @@
 //
-// Created by gaelt on 26.10.26.
+// Created by aldem on 31.10.2026.
+//
+
+
 //
 
 #include "../include/Produits.h"
@@ -46,7 +49,6 @@ static void ajouterProduit(void) {
     saisirProduit(modele);
     modele[taille].actif = 1;
     printf("Produit crée avec succès");
-    taille++;
 }
 
 static void mettreAJourProduit(void) {

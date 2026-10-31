@@ -2,9 +2,9 @@
 // Created by aldem on 26.10.2026.
 //
 
-#include "../include/commande.h"
+#include "../include/Commande.h"
 #include "../include/types.h"
-#include "../include/produits.h"
+#include "../include/Produits.h"
 #include "../include/Clients.h"
 #include "../include/Initialisation.h"
 #include <stdio.h>

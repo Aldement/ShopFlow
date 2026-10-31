@@ -2,7 +2,7 @@
 // Created by gaelt on 26.10.26.
 //
 
-#include "../include/menu.h"
+#include "../include/Menu.h"
 #include <stdio.h>
 #include <stdlib.h>
 

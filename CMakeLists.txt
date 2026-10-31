@@ -12,8 +12,12 @@ add_executable(ShopFlow src/main.c
         include/menu.h
         src/Initialisation.c
         include/Initialisation.h
-        include/types.h
-        src/Produits.c
-        include/Produits.h
+        include/Types.h
+        src/produits.c
+        include/produits.h
         src/Clients.c
-        include/Clients.h)
+        include/Clients.h
+        src/produits.c
+        include/produits.h
+        src/Statistic.c
+        include/Statistic.h)
