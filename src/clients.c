@@ -2,40 +2,33 @@
 // Created by gaelt on 26.10.26.
 //
 
-#include "../include/Clients.h"
-
+#include "../include/clients.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "types.h"
+#include "utils.h"
 
 
-
-void ajouterClient(Boutique *b)
-{
-    char email[100];
+void ajouterClient(Boutique *b){
+    char email[80];
 
     printf("Email : ");
-    scanf("%s", email);
+    lireTexte(email, 80);
 
-    for(int i=0;i<b->nbClients;i++)
-    {
-        if(strcmp(b->clients[i].email,email)==0)
-        {
+    for(int i=0; i<b->nbClients; i++){
+        if(strcmp(b->clients[i].email, email)==0){
             printf("Email deja utilise.\n");
             return;
         }
     }
 
-    if(b->nbClients == b->capaciteClients)
-    {
+    if(b->nbClients == b->capaciteClients){
         b->capaciteClients *= 2;
 
         Client *tmp = realloc(b->clients,b->capaciteClients*sizeof(Client));
 
-        if(tmp == NULL)
-            return;
+        if(tmp == NULL) return;
 
         b->clients = tmp;
     }
@@ -47,26 +40,27 @@ void ajouterClient(Boutique *b)
     strcpy(c.email,email);
 
     printf("Nom : ");
-    scanf("%s", c.nom);
+    lireTexte(c.nom, 50);
 
     printf("Prenom : ");
-    scanf("%s", c.prenom);
+    lireTexte(c.prenom, 50);
 
     printf("Telephone : ");
-    scanf("%s", c.telephone);
+    lireTexte(c.telephone, 15);
 
     printf("Rue : ");
-    scanf(" %[^\n]", c.adresse.rue);
+    lireTexte(c.adresse.rue, 80);
 
     printf("Ville : ");
-    scanf(" %[^\n]", c.adresse.ville);
+    lireTexte(c.adresse.ville, 50);
 
     printf("Code postal : ");
-    scanf("%s", c.adresse.codePostal);
+    lireTexte(c.adresse.codePostal, 6);
 
     printf("Pays : ");
-    scanf(" %[^\n]", c.adresse.pays);
+    lireTexte(c.adresse.pays, 50);
 
+    c.pointsFidelite = 0;
     c.commandes = NULL;
     c.nbCommandes = 0;
     c.capaciteCommandes = 0;
@@ -75,28 +69,22 @@ void ajouterClient(Boutique *b)
     b->clients[b->nbClients++] = c;
 }
 
-int rechercheClient(Boutique *b, int idClient)
-{
-    for(int i=0;i<b->nbClients;i++)
-    {
-        if(b->clients[i].idClient == idClient)
-            return i;
+int rechercheClient(Boutique *b, int idClient){
+    for (int i=0; i<b->nbClients; i++){
+        if (b->clients[i].idClient == idClient) return i;
     }
-
     return -1;
 }
 
-void mettreAJourClient(Boutique *b)
-{
+void mettreAJourClient(Boutique *b){
     int id;
 
     printf("ID client : ");
-    scanf("%d",&id);
+    id = lireEntier(1, 1000000);
 
-    int pos = rechercheClient(b,id);
+    int pos = rechercheClient(b, id);
 
-    if(pos == -1)
-    {
+    if(pos == -1){
         printf("Client introuvable.\n");
         return;
     }
@@ -104,50 +92,46 @@ void mettreAJourClient(Boutique *b)
     Client *c = &b->clients[pos];
 
     printf("Nom : ");
-    scanf("%s", c->nom);
+    lireTexte(c->nom, 50);
 
     printf("Prenom : ");
-    scanf("%s", c->prenom);
+    lireTexte(c->prenom, 50);
 
     printf("Telephone : ");
-    scanf("%s", c->telephone);
+    lireTexte(c->telephone, 15);
 
     printf("Rue : ");
-    scanf(" %s", c->adresse.rue);
+    lireTexte(c->adresse.rue, 80);
 
     printf("Ville : ");
-    scanf(" %s", c->adresse.ville);
+    lireTexte(c->adresse.ville, 50);
 
     printf("Code postal : ");
-    scanf("%s", c->adresse.codePostal);
+    lireTexte(c->adresse.codePostal, 6);
 
     printf("Pays : ");
-    scanf(" %s", c->adresse.pays);
+    lireTexte(c->adresse.pays, 50);
 
     printf("Client mis a jour.\n");
 }
 
-void supprimerClient(Boutique *b)
-{
+void supprimerClient(Boutique *b){
     int id;
 
     printf("ID client : ");
-    scanf("%d",&id);
+    id = lireEntier(1, 1000000);
 
     int pos = rechercheClient(b,id);
 
-    if(pos == -1)
-    {
+    if (pos == -1){
         printf("Client introuvable.\n");
         return;
     }
 
     Client *c = &b->clients[pos];
 
-    for(int i=0;i<c->nbCommandes;i++)
-    {
-        if(c->commandes[i].statut != 0)
-        {
+    for (int i=0; i<c->nbCommandes; i++){
+        if (strcmp(c->commandes[i].statut, "ANNULEE") != 0){
             printf("Suppression refusee : commande active.\n");
             return;
         }
@@ -158,17 +142,15 @@ void supprimerClient(Boutique *b)
     printf("Client desactive.\n");
 }
 
-void afficherClient(Boutique *b)
-{
+void afficherClient(Boutique *b){
     int id;
 
     printf("ID client : ");
-    scanf("%d",&id);
+    id = lireEntier(1, 1000000);
 
     int pos = rechercheClient(b,id);
 
-    if(pos == -1)
-    {
+    if (pos == -1){
         printf("Client introuvable.\n");
         return;
     }
@@ -190,25 +172,24 @@ void afficherClient(Boutique *b)
 
     printf("\nHistorique des commandes\n");
 
-    for(int i=0;i<c.nbCommandes;i++)
-    {
+    for (int i=0; i<c.nbCommandes; i++){
         printf("Commande %d - %.2f €\n",c.commandes[i].numero,c.commandes[i].montantTTC);
     }
 }
-void afficherlisteClient(Boutique* b) {
-    printf("\n-------------Liste Clients--------------\n");
-    float ca=0;
-    for (int i=0;i<b->nbClients++;i++) {
-        for (int j=0;j<b->clients[i].nbCommandes;j++) {
-            ca += b->clients[i].commandes[j].montantTTC;
+void afficherlisteClient(Boutique* b){
+    printf("\n------------- Liste Clients --------------\n");
+
+    for (int i = 0; i < b->nbClients; i++){
+        double ca = 0;   /* remis a zero pour chaque client */
+
+        for (int j = 0; j < b->clients[i].nbCommandes; j++){
+            if (strcmp(b->clients[i].commandes[j].statut, "ANNULEE") != 0)
+                ca += b->clients[i].commandes[j].montantTTC;
         }
-        printf("\nID : %d",b->clients[i].idClient);
 
-        printf("\nNom : %s %s",b->clients[i].prenom,b->clients[i].nom);
-
-        printf("\nNb commandes : %d",b->clients[i].nbCommandes);
-
-        printf("\nCA genere : %.2f €\n",ca);
+        printf("\nID : %d", b->clients[i].idClient);
+        printf("\nNom : %s %s", b->clients[i].prenom, b->clients[i].nom);
+        printf("\nNb commandes : %d", b->clients[i].nbCommandes);
+        printf("\nCA genere : %.2f EUR\n", ca);
     }
-
 }

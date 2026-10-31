@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "types.h"
+#include "../include/initialisation.h"
+#include "../include/clients.h"
+
 
 /* initialisation.c : jeu de donnees de demonstration */
-#include "../include/Initialisation.h"
 
 static Produit produitsInit[8] = {
     {"PRD-0001", "Clavier mecanique",  "Informatique",  79.90,  42, 10, 1},
@@ -74,3 +76,77 @@ static Client clientsInit[5] = {
     {5, "Petit",   "Lea",   "l.petit@mail.fr",   "0656789012",
         {"3 rue de la Republique", "Marseille", "13001", "France"}, 20, 0, 0, NULL, 1}
 };
+
+void initialiserDonneesTest(Boutique *b){
+    strcpy(b->nom, "ShopFlow");
+
+    /* 1. Produits : on reserve 10 places et on copie les 8 produits */
+    b->capaciteProduits = 10;
+    b->produits = malloc(b->capaciteProduits * sizeof(Produit));
+    if (b->produits == NULL){
+        printf("Erreur memoire.\n");
+        exit(1);
+    }
+    for (int i = 0; i < 8; i++) b->produits[i] = produitsInit[i];
+
+    b->nbProduits = 8;
+
+    /* 2. Clients : on reserve 8 places et on copie les 5 clients */
+    b->capaciteClients = 8;
+    b->clients = malloc(b->capaciteClients * sizeof(Client));
+    if (b->clients == NULL){
+        printf("Erreur memoire.\n");
+        exit(1);
+    }
+    for (int i = 0; i < 5; i++) b->clients[i] = clientsInit[i];
+
+    b->nbClients = 5;
+
+    /* 3. Commandes : chacune va dans le tableau de son client */
+    for (int i = 0; i < 6; i++){
+        int pos = rechercheClient(b, commandesInit[i].idClient);
+        Client *cl = &b->clients[pos];
+
+        /* si le tableau de commandes du client est plein, on le double */
+        if (cl->nbCommandes == cl->capaciteCommandes){
+            int nouvelle;
+            if (cl->capaciteCommandes == 0) nouvelle = 2;
+            else nouvelle = cl->capaciteCommandes * 2;
+
+            Commande *tmp = realloc(cl->commandes, nouvelle * sizeof(Commande));
+            if (tmp == NULL){
+                printf("Erreur memoire.\n");
+                exit(1);
+            }
+            cl->commandes = tmp;
+            cl->capaciteCommandes = nouvelle;
+        }
+
+        Commande c = commandesInit[i];
+
+        /* on copie les lignes dans un tableau alloue avec malloc */
+        c.lignes = malloc(c.capaciteLignes * sizeof(Ligne_Commande));
+        if (c.lignes == NULL){
+            printf("Erreur memoire.\n");
+            exit(1);
+        }
+        for (int j = 0; j < c.nbLignes; j++) c.lignes[j] = commandesInit[i].lignes[j];
+
+        cl->commandes[cl->nbCommandes] = c;
+        cl->nbCommandes++;
+    }
+
+    b->numeroSuivant = 1007;
+    b->idClientSuivant = 6;
+}
+
+/* Libere TOUTE la memoire, du plus profond au plus haut */
+void detruireBoutique(Boutique *b){
+    for (int i = 0; i < b->nbClients; i++){
+        for (int j = 0; j < b->clients[i].nbCommandes; j++) free(b->clients[i].commandes[j].lignes);   /* lignes de chaque commande */
+
+        free(b->clients[i].commandes);/* commandes de chaque client */
+    }
+    free(b->clients);
+    free(b->produits);
+}

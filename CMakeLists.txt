@@ -10,14 +10,14 @@ include_directories(include)
 add_executable(ShopFlow src/main.c
         src/menu.c
         include/menu.h
-        src/Initialisation.c
-        include/Initialisation.h
+        src/initialisation.c
+        include/initialisation.h
         include/Types.h
         src/produits.c
         include/produits.h
-        src/Clients.c
-        include/Clients.h
-        src/produits.c
-        include/produits.h
-        src/Statistic.c
-        include/Statistic.h)
+        src/clients.c
+        include/clients.h
+        src/statistic.c
+        include/statistic.h
+        src/utils.c
+        include/utils.h)

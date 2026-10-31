@@ -4,7 +4,8 @@
 
 #ifndef PROJET_C_INITIALISATION_H
 #define PROJET_C_INITIALISATION_H
+#include "types.h"
 
-static void initialisation(void);
-
+void initialiserDonneesTest(Boutique *b);
+void detruireBoutique(Boutique *b);
 #endif //PROJET_C_INITIALISATION_H
