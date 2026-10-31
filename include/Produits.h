@@ -5,4 +5,5 @@
 #ifndef PROJET_C_PRODUITS_H
 #define PROJET_C_PRODUITS_H
 
+static void ajouterProduit(void)
 #endif //PROJET_C_PRODUITS_H

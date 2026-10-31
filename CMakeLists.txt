@@ -19,4 +19,6 @@ add_executable(ShopFlow src/main.c
         "src/Fonction Gestion des produits(ajouterProduit).c"
         "src/Fonction Gestion des produits(modifierProduit(afficherProduits)).c"
         include/commande.h
-        src/commande.c)
+        src/commande.c
+        Statistic.c
+        Statistic.h)
