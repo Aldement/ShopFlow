@@ -6,6 +6,7 @@
 #include "../include/clients.h"
 #include "../include/Commande.h"
 #include "../include/statistic.h"
+#include "../include/retours.h"
 
 static void menuProduits(Boutique *b)
 {
@@ -65,9 +66,11 @@ static void menuCommandes(Boutique *b)
         printf("  4. Supprimer une ligne\n");
         printf("  5. Changer le statut\n");
         printf("  6. Annuler une commande\n");
+        printf("  7. Retourner un produit\n");
+        printf("  8. Voir l'avoir d'un client\n");
         printf("  0. Retour\n");
         printf("  Votre choix : ");
-        choix = lireEntier(0, 6);
+        choix = lireEntier(0, 8);
 
         if (choix == 1) creerCommande(b);
         if (choix == 2) afficherUneCommande(b);
@@ -75,6 +78,8 @@ static void menuCommandes(Boutique *b)
         if (choix == 4) supprimerLigne(b);
         if (choix == 5) changerStatut(b);
         if (choix == 6) annulerCommande(b);
+        if (choix == 7) retournerProduit(b);
+        if (choix == 8) afficherAvoir(b);
     } while (choix != 0);
 }
 

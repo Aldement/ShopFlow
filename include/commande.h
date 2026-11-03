@@ -12,5 +12,6 @@ void changerStatut(Boutique *b);
 void annulerCommande(Boutique *b);
 void ajouterLigne(Boutique *b);
 void supprimerLigne(Boutique *b);
+int trouverCommande(Boutique *b, int num, int *iClient, int *iCommande);
 
 #endif //SHOPFLOW_COMMANDE_H

@@ -35,7 +35,8 @@ void ajouterClient(Boutique *b){
 
     Client c;
 
-    c.idClient = b->idClientSuivant++;
+    c.idClient = b->idClientSuivant;
+    b->idClientSuivant++;
 
     strcpy(c.email,email);
 
@@ -65,7 +66,7 @@ void ajouterClient(Boutique *b){
     c.nbCommandes = 0;
     c.capaciteCommandes = 0;
     c.actif = 1;
-
+    c.avoir = 0;
     b->clients[b->nbClients++] = c;
 }
 
@@ -175,6 +176,8 @@ void afficherClient(Boutique *b){
     for (int i=0; i<c.nbCommandes; i++){
         printf("Commande %d - %.2f €\n",c.commandes[i].numero,c.commandes[i].montantTTC);
     }
+
+    printf("Avoir : %.2f EUR\n", c.avoir);
 }
 void afficherlisteClient(Boutique* b){
     printf("\n------------- Liste Clients --------------\n");

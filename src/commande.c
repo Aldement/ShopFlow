@@ -99,6 +99,7 @@ int saisirLigne(Boutique *b, Commande *cmd){
     cmd->lignes[n].quantite = q;
     cmd->lignes[n].prixUnitaire = b->produits[p].prixUnitaireHT;
     cmd->lignes[n].sousTotalHT = q * b->produits[p].prixUnitaireHT;
+    cmd->lignes[n].quantiteRetournee = 0;
     cmd->nbLignes++;
 
     b->produits[p].quantiteStock = b->produits[p].quantiteStock - q;
